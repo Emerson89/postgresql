@@ -35,9 +35,9 @@ Postgresql database installation using ansible
   roles:
     - postgresql
 ```
-## Execute o playbook
+## Exemplo execute o playbook
 ``` 
-ansible-playbook -i hosts zabbix.yml --extra-vars "database_name=exemplo-1 database_user=exemplo-2 db_pass=exemplo-3"
+ansible-playbook -i hosts playbook.yml --extra-vars "database_name=exemplo-1 database_user=exemplo-2 db_pass=exemplo-3"
 ```
 ## Licença
 ![Badge](https://img.shields.io/badge/license-GPLv3-green)
