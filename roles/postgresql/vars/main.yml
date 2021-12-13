@@ -1,0 +1,19 @@
+postgresql_databases:
+  - name: "{{ database_name }}"
+    login_host: "{{ database_address }}"
+    login_user: "{{ postgresql_user }}"
+    login_password: ""
+
+postgresql_users:
+  - login_host: "{{ database_address }}"
+    login_user: "{{ postgresql_user }}"
+    login_password: ""
+    name: "{{ database_user }}"
+    password: "{{ db_pass }}"
+
+postgresql_timescale:
+  - name: timescaledb
+    db: "{{ database_name }}"
+    login_host: "{{ database_address }}"
+    login_user: "{{ postgresql_user }}"
+    login_password: ""

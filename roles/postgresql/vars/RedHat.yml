@@ -1,0 +1,10 @@
+---
+__postgresql_version: 12
+__postgresql_daemon: postgresql-{{ __postgresql_version }}
+__postgresql_bin_path: /usr/bin/postgresql-{{ __postgresql_version }}-setup
+__postgresql_config_path: /var/lib/pgsql/{{ __postgresql_version }}/data/
+__postgresql_data_dir: /var/lib/pgsql/{{ __postgresql_version }}/data/
+__postgresql_packages:
+    - postgresql{{ postgresql_version }}-server
+    - postgresql{{ postgresql_version }}
+    - timescaledb_{{ postgresql_version }}
