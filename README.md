@@ -23,7 +23,6 @@ Postgresql database installation using ansible
 | database_user | Nome user | user01 
 | db_pass | Senha user | Mdfrty2#
 | remote_address | IP para acesso remoto ao banco | 127.0.0.1
-| zbx_front_address | IP front | 127.0.0.1
 | database_address | IP database | 127.0.0.1
 
 ## Exemplo de playbook para instalação
@@ -38,6 +37,7 @@ Postgresql database installation using ansible
 ## Exemplo execute o playbook
 ``` 
 ansible-playbook -i hosts playbook.yml --extra-vars "database_name=exemplo-1 database_user=exemplo-2 db_pass=exemplo-3"
+ansible-playbook -i hosts playbook.yml --extra-vars "database_name=exemplo-1 database_user=exemplo-2 db_pass=exemplo-3 remote_address=IP-REMOTO" <----Acesso remoto
 ```
 ## Licença
 ![Badge](https://img.shields.io/badge/license-GPLv3-green)

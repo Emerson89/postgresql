@@ -1,6 +1,7 @@
 ---
 remote_address: 127.0.0.1
 database_address: 127.0.0.1
+timescaledb_install: False
 
 database_name: db01
 database_user: user01
