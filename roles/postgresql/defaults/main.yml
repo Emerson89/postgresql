@@ -5,7 +5,7 @@ timescaledb_install: False
 
 database_name: db01
 database_user: user01
-db_pass: Mdfrty2#
+db_pass: Mdfrty2
 
 # RHEL/CentOS only. Set a repository to use for PostgreSQL installation.
 postgresql_enablerepo: https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
