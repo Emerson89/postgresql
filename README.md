@@ -19,11 +19,12 @@ Postgresql database installation using ansible
 ## Variáveis
 | Nome | Descrição | Default | 
 |------|-----------|---------|
-| database_name | Nome database | db01
-| database_user | Nome user | user01 
-| db_pass | Senha user | Mdfrty2#
-| remote_address | IP para acesso remoto ao banco | 127.0.0.1
-| database_address | IP database | 127.0.0.1
+| database_name | Nome database | db01 |
+| database_user | Nome user | user01 | 
+| db_pass | Senha user | Mdfrty2 |
+| remote_address | IP para acesso remoto ao banco | 127.0.0.1 |
+| database_address | IP database | 127.0.0.1 |
+| timescaledb_install | Habilitar timescaledb | False|
 
 ## Exemplo de playbook para instalação
 ```
