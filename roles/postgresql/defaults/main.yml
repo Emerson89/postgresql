@@ -1,5 +1,9 @@
 ---
-remote_address: 127.0.0.1
+pg_hba_config: []
+  # - remote_address: 172.16.3.10
+  # - remote_address: 172.16.3.11
+  # - remote_address: 172.16.3.12
+
 database_address: 127.0.0.1
 timescaledb_install: False
 
@@ -24,10 +28,13 @@ postgresql_service_enabled: true
 # Databases to ensure exist.
 postgresql_databases: []
 # - name: exampledb # required; the rest are optional
-#   lc_collate: # defaults to 'en_US.UTF-8'
-#   lc_ctype: # defaults to 'en_US.UTF-8'
 #   encoding: # defaults to 'UTF-8'
 #   template: # defaults to 'template0'
+#   lc_collate: # default to '' 
+#   lc_ctype: # default to '' 
+#   locale_provider: # default to '' 
+#   icu_locale: # default to '' 
+#   target: # default to ''
 #   login_host: # defaults to 'localhost'
 #   login_password: # defaults to not set
 #   login_user: # defaults to '{{ postgresql_user }}'

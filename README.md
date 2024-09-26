@@ -19,11 +19,9 @@ Postgresql database installation using ansible
 ## Variáveis
 | Nome | Descrição | Default | 
 |------|-----------|---------|
-| database_name | Nome database | db01 |
-| database_user | Nome user | user01 | 
-| db_pass | Senha user | Mdfrty2 |
-| remote_address | IP para acesso remoto ao banco | 127.0.0.1 |
-| database_address | IP database | 127.0.0.1 |
+| postgresql_databases | List databases | [] |
+| postgresql_users | List users | [] | 
+| pg_hba_config | IP para acesso remoto ao banco | [] |
 | timescaledb_install | Habilitar timescaledb | False|
 
 ## Exemplo de playbook para instalação
@@ -35,10 +33,50 @@ Postgresql database installation using ansible
   roles:
     - postgresql
 ```
-## Exemplo execute o playbook
-``` 
-ansible-playbook -i hosts playbook.yml --extra-vars "database_name=exemplo-1 database_user=exemplo-2 db_pass=exemplo-3"
-ansible-playbook -i hosts playbook.yml --extra-vars "database_name=exemplo-1 database_user=exemplo-2 db_pass=exemplo-3 remote_address=IP-REMOTO" <----Acesso remoto
+
+*Inside vars.yml:*
+
 ```
+## Access remote
+
+pg_hba_config:
+  - remote_address: 172.16.3.10
+  - remote_address: 172.16.3.11
+  - remote_address: 172.16.3.12
+
+postgresql_databases:
+  - name: "db"
+    encoding: utf8
+    collation: utf8_bin
+postgresql_users:
+  - name: "dbuser"
+    password: "yQE9ob2yqR4=xxtttrr5"
+```
+
+## Example inventory
+
+```bash
+[all]
+127.0.0.1 ansible_ssh_private_key_file=PATH/private_key 
+
+[all:vars]
+ansible_user=username
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+```
+
+## Exemplo execute o playbook
+
+- Use Basic
+
+``` 
+ansible-playbook -i hosts playbook.yml --extra-vars "@vars.yml"
+```
+
+- Use vars
+
+``` 
+ansible-playbook -i hosts playbook.yml --extra-vars "@vars.yml"
+```
+
 ## Licença
 ![Badge](https://img.shields.io/badge/license-GPLv3-green)

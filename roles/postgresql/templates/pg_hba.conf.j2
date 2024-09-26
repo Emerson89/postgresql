@@ -84,7 +84,9 @@
 local   all             all                                     trust
 # IPv4 local connections:
 host    all             all             127.0.0.1/32            trust
-host    all             all {{ remote_address }}/32    md5
+{% for server in pg_hba_config %}
+host    all             all {{ server.remote_address }}/32    md5
+{% endfor %}
 # IPv6 local connections:
 host    all             all             ::1/128                 md5
 # Allow replication connections from localhost, by a user with the
