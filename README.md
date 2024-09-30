@@ -162,7 +162,9 @@ postgresql_databases_dump_restore:
     login_host: <IP-HOST-REMOTE>
     login_user: "postgres"
     login_password: "N2knc7Dig3LoPMNE0HQVB"
-    
+
+# Dump and Restore
+
    ## Connect to the remote host to perform the dump and later do the restore
   - name: "loja"
     state: dump
