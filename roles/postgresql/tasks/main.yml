@@ -1,22 +1,41 @@
 ---
 - include_tasks: variables.yml
+  when: install_postgresql
 
 - include_tasks: RedHat.yml
-  when: ansible_distribution_file_variety == 'RedHat'
+  when: ansible_distribution_file_variety == 'RedHat' and install_postgresql
 
 - include_tasks: Debian.yml
-  when: ansible_distribution_file_variety == 'Debian'
+  when: ansible_distribution_file_variety == 'Debian' and install_postgresql
 
-- include_tasks: configure.yml
+- include_tasks: configure.yml 
+  when: install_postgresql
 
 - name: Ensure PostgreSQL is started and enabled on boot.
   service:
     name: "{{ postgresql_daemon }}"
     state: "{{ postgresql_restarted_state }}"
     enabled: "{{ postgresql_service_enabled }}"
+  when: install_postgresql  
 
 # Configure PostgreSQL.
 - import_tasks: users.yml
+  when: install_postgresql or postgresql_dump_restore and create_users_postgresql
+
 - import_tasks: databases.yml
+  when: install_postgresql
+
+- import_tasks: alter-user.yml
+  when: install_postgresql
+
+- import_tasks: copy.yml
+  when: install_postgresql and copy_restore
+
+- import_tasks: dump-restore.yml
+  when: postgresql_dump_restore
+
+- import_tasks: users-privs.yml
+  when: install_postgresql or users_privs_postgresql
+  
 - import_tasks: timescaledb.yml
-  when: timescaledb_install
+  when: timescaledb_install and install_postgresql

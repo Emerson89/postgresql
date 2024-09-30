@@ -5,7 +5,14 @@ pg_hba_config: []
   # - remote_address: 172.16.3.12
 
 database_address: 127.0.0.1
-timescaledb_install: False
+timescaledb_install: false
+install_postgresql: false
+postgresql_dump_restore: false
+create_users_postgresql: false
+users_privs_postgresql: false
+
+path_file: ""
+copy_restore: false
 
 database_name: db01
 database_user: user01
@@ -24,6 +31,39 @@ postgresql_group: postgres
 postgresql_unix_socket_directories: /var/run/postgresql
 
 postgresql_service_enabled: true
+
+postgresql_users_privs: []
+  # - database: exampledb # required; the rest are optional
+  #   privs:  # default to ''
+  #   type:  # default to ''
+  #   objs:  # default to ''
+  #   schema:  # default to ''
+  #   roles: userdb # required; the rest are optional
+  #   grant_option:  # default to true
+  #   admin_option:  # default to false
+  #   login_host:  # default to 'localhost'
+  #   login_password:  # default to 'omit'
+  #   login_user:  # default to 'postgresql_user'
+  #   login_unix_socket: # default to 'postgresql_unix_socket_directories'
+  #   port:  # default to 5432
+  #   state:  # default to 'present'
+
+postgresql_databases_dump_restore: []
+# - name: exampledb # required; the rest are optional
+#   encoding: # defaults to 'UTF-8'
+#   template: # defaults to 'template0'
+#   lc_collate: # default to '' 
+#   lc_ctype: # default to '' 
+#   locale_provider: # default to '' 
+#   icu_locale: # default to '' 
+#   target: # default to ''
+#   login_host: # defaults to 'localhost'
+#   login_password: # defaults to not set
+#   login_user: # defaults to '{{ postgresql_user }}'
+#   login_unix_socket: # defaults to 1st of postgresql_unix_socket_directories
+#   port: # defaults to not set
+#   owner: # defaults to postgresql_user
+#   state: # defaults to 'present'
 
 # Databases to ensure exist.
 postgresql_databases: []

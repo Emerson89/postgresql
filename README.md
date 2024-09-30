@@ -1,31 +1,50 @@
 # Postgresql Database and TimescaleDB
 
-Postgresql database installation using ansible
+**ansible for installation, users creation, databases, permissions, dump and restore database Postgresql** 
 
-## Dependências
-![Badge](https://img.shields.io/badge/ansible-2.9.10-blue)
+## Dependencies
 
-## Suporte SO
+- ansible-2.16.6
+- psycopg2 >= 2.5.1
+- community.postgresql
+
+## Suport SO
 
 - Ubuntu20
 - Debian10
 - Rocky8
 - Centos8
 
-# Como Usar!!!
+# how to use!!!
 
-## Crie o arquivo de inventário hosts 
-
-## Variáveis
-| Nome | Descrição | Default | 
+## Variables
+| Name | Description | Default | 
 |------|-----------|---------|
 | postgresql_databases | List databases | [] |
 | postgresql_users | List users | [] | 
-| pg_hba_config | IP para acesso remoto ao banco | [] |
-| timescaledb_install | Habilitar timescaledb | False|
+| pg_hba_config | IP for remote access to the bank | [] |
+| timescaledb_install | Enabled timescaledb | false|
+| install_postgresql | Install postgresql in VM | false|
+| postgresql_dump_restore | Enabled dump or restore database | false|
+| create_users_postgresql | Enabled create users only remote use | false|
+| users_privs_postgresql | Enabled modification of privileges | false|
+| copy_restore | Enable copy local file to remote using for restore dump | false|
+| path_file | Path local file to remote using for restore dump | ""|
 
-## Exemplo de playbook para instalação
+## Pass user postgres
+
+Through the module *postgresql_query* is performed the alter user and generated random password of the user postgres and saved in the root of the project in the file *passwordfile* 
+
+```yaml
+- name: Alter user postgres
+  postgresql_query:
+    db: postgres
+    query: ALTER USER postgres WITH PASSWORD '{{ lookup('ansible.builtin.password', 'passwordfile', length=21, chars=['ascii_lowercase', 'ascii_uppercase', 'digits']) }}'
 ```
+
+## Example playbook for postgresql installation on VM
+
+```yaml
 ---
 - name: Install Database
   hosts: all
@@ -36,7 +55,9 @@ Postgresql database installation using ansible
 
 *Inside vars.yml:*
 
-```
+```yaml
+install_postgresql: true
+
 ## Access remote
 
 pg_hba_config:
@@ -48,12 +69,43 @@ postgresql_databases:
   - name: "db"
     encoding: utf8
     collation: utf8_bin
+    template: template0
+    lc_collate: en_US.UTF-8
+    lc_ctype: en_US.UTF-8
 postgresql_users:
   - name: "dbuser"
     password: "yQE9ob2yqR4=xxtttrr5"
 ```
 
-## Example inventory
+- Copy dump local for remote
+
+```yaml
+install_postgresql: true
+create_users_postgresql: true
+postgresql_dump_restore: true
+copy_restore: true
+path_file: "dump_restore.sql"
+
+pg_hba_config:
+  - remote_address: 172.16.3.11
+
+postgresql_databases:
+  - name: "loja"
+    encoding: utf8
+    collation: utf8_bin
+    template: template0
+    lc_collate: en_US.UTF-8
+    lc_ctype: en_US.UTF-8
+postgresql_users:
+  - name: "dbuser"
+    password: "yQE9ob2yqR4=xxtttrr5"
+postgresql_databases_dump_restore:
+  - name: "loja"
+    state: restore
+    target: /home/{{ ansible_user }}/dump_restore.sql 
+```    
+
+## Inventory example
 
 ```bash
 [all]
@@ -64,18 +116,150 @@ ansible_user=username
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 ```
 
-## Exemplo execute o playbook
+## Example run the playbook
 
-- Use Basic
-
-``` 
+```bash
 ansible-playbook -i hosts playbook.yml --extra-vars "@vars.yml"
 ```
 
-- Use vars
+## Example of playbook user creation, databases, dump, restore or privilege change
 
-``` 
-ansible-playbook -i hosts playbook.yml --extra-vars "@vars.yml"
+```yaml
+---
+- name: Postgresql tasks
+  hosts: localhost
+  connection: local
+  roles:
+    - postgresql
+```
+
+*Inside vars.yml:*
+
+```yaml
+ppostgresql_dump_restore: true
+users_privs_postgresql: true
+create_users_postgresql: true
+
+# Create Users
+postgresql_users:
+  - name: "dbuser"
+    password: "yQE9ob2yqR4=xxtttrr5"
+    login_host: <IP-HOST-REMOTE>
+    login_user: "postgres"
+    login_password: "N2knc7Dig3LoPMNE0HQVB"
+    ## Only needed when remote connection
+    become: false
+    postgresql_user: ""
+
+# Create Database
+postgresql_databases_dump_restore:
+  - name: "db2"
+    encoding: utf8
+    collation: utf8_bin
+    template: template0
+    lc_collate: en_US.UTF-8
+    lc_ctype: en_US.UTF-8
+    login_host: <IP-HOST-REMOTE>
+    login_user: "postgres"
+    login_password: "N2knc7Dig3LoPMNE0HQVB"
+    
+   ## Connect to the remote host to perform the dump and later do the restore
+  - name: "loja"
+    state: dump
+    target: loja_dump_remote.sql
+    login_host: <IP-HOST-REMOTE>
+    login_user: "postgres"
+    login_password: "N2knc7Dig3LoPMNE0HQVB"
+   ## Connect to the remote host to perform the dump and later do the restore  
+  - name: "loja_restore"
+    encoding: utf8
+    collation: utf8_bin
+    login_host: <IP-HOST-REMOTE>
+    login_user: "postgres"
+    login_password: "N2knc7Dig3LoPMNE0HQVB"
+  - name: "loja_restore"
+    state: restore
+    target: loja_dump_remote.sql
+    login_host: <IP-HOST-REMOTE>
+    login_user: "postgres"
+    login_password: "N2knc7Dig3LoPMNE0HQVB"
+
+# Permissions
+
+## GRANT ALL PRIVILEGES ON DATABASE db TO dbuser
+postgresql_users_privs:
+  - database: "db"
+    login_host: <IP-HOST-REMOTE>
+    login_user: "postgres"
+    login_password: "N2knc7Dig3LoPMNE0HQVB"
+    roles: "dbuser"
+    type: database
+    privs: ALL
+    grant_option: true
+    ## Only needed when remote connection
+    become: false
+    postgresql_user: ""
+
+## REVOKE ALL PRIVILEGES ON DATABASE db TO dbuser
+  - database: "db"
+    login_host: <IP-HOST-REMOTE>
+    login_user: "postgres"
+    login_password: "N2knc7Dig3LoPMNE0HQVB"
+    roles: "dbuser"
+    type: database
+    privs: ALL
+    state: absent
+    ## Only needed when remote connection
+    become: false
+    postgresql_user: ""
+
+## GRANT ALL PRIVILEGES ON ALL TABLES db TO dbuser
+  - database: "db"
+    login_host: <IP-HOST-REMOTE>
+    login_user: "postgres"
+    login_password: "N2knc7Dig3LoPMNE0HQVB"
+    roles: "dbuser"
+    type: table
+    schema: public
+    objs: ALL_IN_SCHEMA
+    privs: ALL
+    grant_option: true
+    ## Only needed when remote connection
+    become: false
+    postgresql_user: ""
+
+## GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE customers,products,orders,itens_request TO dbuser;
+  - database: "store"
+    login_host: <IP-HOST-REMOTE>
+    login_user: "postgres"
+    login_password: "N2knc7Dig3LoPMNE0HQVB"
+    roles: "dbuser"
+    type: table
+    schema: public
+    objs: customers,products,orders,itens_request
+    privs: SELECT,INSERT,UPDATE,DELETE
+    ## Only needed when remote connection
+    become: false
+    postgresql_user: ""
+
+## REVOKE INSERT, UPDATE ON TABLE customers,products,orders,itens_request FROM dbuser
+  - database: "store"
+    login_host: <IP-HOST-REMOTE>
+    login_user: "postgres"
+    login_password: "N2knc7Dig3LoPMNE0HQVB"
+    roles: "dbuser"
+    type: table
+    schema: public
+    objs: customers,products,orders,itens_request
+    privs: SELECT,INSERT,UPDATE,DELETE
+    state: absent
+    ## Only needed when remote connection
+    become: false
+    postgresql_user: ""
+```
+
+```bash
+ansible-playbook playbook.yml --extra-vars "@vars.yml"
 ```
 
 ## Licença

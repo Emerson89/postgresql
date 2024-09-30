@@ -1,4 +1,4 @@
-- name: Create PostgreSQL databases
+- name: Dump/Restore PostgreSQL databases
   postgresql_db:
     name: "{{ item.name }}"
     encoding: "{{ item.encoding | default('UTF-8') }}"
@@ -16,9 +16,7 @@
     port: "{{ item.port | default(omit) }}"
     owner: "{{ item.owner | default(postgresql_user) }}"
     state: "{{ item.state | default('present') }}"
-  with_items: "{{ postgresql_databases }}"
+  with_items: "{{ postgresql_databases_dump_restore }}"
   no_log: true
-  become: true
-  become_user: "{{ postgresql_user }}"
   vars:
     ansible_ssh_pipelining: true

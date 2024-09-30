@@ -2,3 +2,6 @@
 *.retry
 .vagrant
 hosts
+playbook-local.yml
+vars.yml
+*.sql

@@ -1,0 +1,23 @@
+---
+- name: Privs PostgreSQL users
+  postgresql_privs:
+    database: "{{ item.database }}"
+    privs: "{{ item.privs | default('') }}"
+    type: "{{ item.type | default('') }}"
+    objs: "{{ item.objs | default('') }}"
+    schema: "{{ item.schema | default('') }}"
+    roles: "{{ item.roles }}"
+    grant_option: "{{ item.grant_option | default(true) }}"
+    admin_option: "{{ item.admin_option | default(false) }}"
+    login_host: "{{ item.login_host | default('localhost') }}"
+    login_password: "{{ item.login_password | default(omit) }}"
+    login_user: "{{ item.login_user | default(postgresql_user) }}"
+    login_unix_socket: "{{ item.login_unix_socket | default(postgresql_unix_socket_directories) }}"
+    port: "{{ item.port | default(5432) }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ postgresql_users_privs }}"
+  no_log: "{{ postgres_users_no_log }}"
+  become: "{{ item.become | default(true) }}"
+  become_user: "{{ postgresql_user }}"
+  vars:
+    ansible_ssh_pipelining: true

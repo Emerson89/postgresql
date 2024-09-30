@@ -10,8 +10,7 @@
     port: "{{ item.port | default(omit) }}"
   with_items: "{{ postgresql_users }}"
   no_log: "{{ postgres_users_no_log }}"
-  become: true
+  become: "{{ item.become | default(true) }}"
   become_user: "{{ postgresql_user }}"
   vars:
     ansible_ssh_pipelining: true
-

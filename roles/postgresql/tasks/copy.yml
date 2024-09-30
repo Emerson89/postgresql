@@ -1,0 +1,7 @@
+- name: Copy file with owner and permission dump 
+  copy:
+    src: "{{ path_file }}"
+    dest: /home/{{ ansible_user }}/{{ path_file }}
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: u=rw,g=r,o=r
