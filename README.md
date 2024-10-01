@@ -141,6 +141,7 @@ users_privs_postgresql: true
 create_users_postgresql: true
 
 # Create Users
+### https://docs.ansible.com/ansible/latest/collections/community/postgresql/postgresql_user_module.html#ansible-collections-community-postgresql-postgresql-user-module
 postgresql_users:
   - name: "dbuser"
     password: "yQE9ob2yqR4=xxtttrr5"
@@ -152,6 +153,7 @@ postgresql_users:
     postgresql_user: ""
 
 # Create Database
+### https://docs.ansible.com/ansible/latest/collections/community/postgresql/postgresql_db_module.html#ansible-collections-community-postgresql-postgresql-db-module
 postgresql_databases_dump_restore:
   - name: "db2"
     encoding: utf8
@@ -166,20 +168,20 @@ postgresql_databases_dump_restore:
 # Dump and Restore
 
    ## Connect to the remote host to perform the dump and later do the restore
-  - name: "loja"
+  - name: "store"
     state: dump
     target: loja_dump_remote.sql
     login_host: <IP-HOST-REMOTE>
     login_user: "postgres"
     login_password: "N2knc7Dig3LoPMNE0HQVB"
    ## Connect to the remote host to perform the dump and later do the restore  
-  - name: "loja_restore"
+  - name: "store_restore"
     encoding: utf8
     collation: utf8_bin
     login_host: <IP-HOST-REMOTE>
     login_user: "postgres"
     login_password: "N2knc7Dig3LoPMNE0HQVB"
-  - name: "loja_restore"
+  - name: "store_restore"
     state: restore
     target: loja_dump_remote.sql
     login_host: <IP-HOST-REMOTE>
@@ -187,6 +189,7 @@ postgresql_databases_dump_restore:
     login_password: "N2knc7Dig3LoPMNE0HQVB"
 
 # Permissions
+### https://docs.ansible.com/ansible/latest/collections/community/postgresql/postgresql_privs_module.html#ansible-collections-community-postgresql-postgresql-privs-module
 
 ## GRANT ALL PRIVILEGES ON DATABASE db TO dbuser
 postgresql_users_privs:
