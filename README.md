@@ -136,7 +136,7 @@ ansible-playbook -i hosts playbook.yml --extra-vars "@vars.yml"
 *Inside vars.yml:*
 
 ```yaml
-ppostgresql_dump_restore: true
+postgresql_dump_restore: true
 users_privs_postgresql: true
 create_users_postgresql: true
 
