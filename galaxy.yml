@@ -1,0 +1,20 @@
+namespace: pgsql
+name: collection
+version: 1.0.0
+readme: README.md
+authors:
+  - Emerson89
+description: Ansible collection for PostgreSQL and TimescaleDB installation, user/database management, permissions and dump/restore.
+license:
+  - GPL-3.0-only
+tags:
+  - postgresql
+  - timescaledb
+  - database
+repository: https://github.com/Emerson89/postgresql
+issues: https://github.com/Emerson89/postgresql/issues
+build_ignore:
+  - '*.tar.gz'
+  - .vagrant
+  - Vagrantfile
+  - '*.retry'

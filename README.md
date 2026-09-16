@@ -8,6 +8,38 @@
 - psycopg2 >= 2.5.1
 - community.postgresql
 
+## Usando como Ansible Collection
+
+Este projeto é publicado como a collection `pgsql.collection`, contendo a role `postgresql`. Para consumi-lo a partir de outro playbook (outro "plano"), sem copiar ou clonar este repositório manualmente:
+
+1. Adicione ao `requirements.yml` do seu projeto:
+
+```yaml
+collections:
+  - name: https://github.com/Emerson89/postgresql.git
+    type: git
+    version: main
+```
+
+2. Instale:
+
+```bash
+ansible-galaxy collection install -r requirements.yml
+```
+
+3. Chame a role pelo FQCN no seu próprio playbook:
+
+```yaml
+---
+- name: Provisiona banco de dados
+  hosts: all
+  become: true
+  roles:
+    - pgsql.collection.postgresql
+```
+
+As variáveis (`install_postgresql`, `postgresql_databases`, `postgresql_users`, etc.) continuam as mesmas descritas abaixo.
+
 ## Suport SO
 
 - Ubuntu20

@@ -5,3 +5,4 @@ hosts
 playbook-local.yml
 vars.yml
 *.sql
+*.tar.gz

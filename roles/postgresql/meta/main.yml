@@ -1,0 +1,23 @@
+---
+galaxy_info:
+  role_name: postgresql
+  author: Emerson89
+  description: Install and manage PostgreSQL and TimescaleDB - users, databases, permissions, dump and restore.
+  license: GPL-3.0-only
+  min_ansible_version: "2.16"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+    - name: Debian
+      versions:
+        - buster
+    - name: EL
+      versions:
+        - "8"
+  galaxy_tags:
+    - postgresql
+    - timescaledb
+    - database
+
+dependencies: []
