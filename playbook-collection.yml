@@ -1,0 +1,5 @@
+- name: Provisiona banco de dados
+  hosts: all
+  become: true
+  roles:
+    - pgsql.collection.postgresql
