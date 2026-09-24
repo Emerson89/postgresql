@@ -1,0 +1,39 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  # imagem já preparada para Ansible, com systemd
+  - name: node1
+    image: geerlingguy/docker-rockylinux8-ansible:latest
+    pre_build_image: true
+    privileged: true          # systemd dentro do container exige privilégio
+    cgroupns_mode: host
+    command: /usr/sbin/init
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      remote_tmp: /tmp/.ansible-${USER}/tmp/
+  playbooks:
+    prepare: prepare.yml
+    converge: converge.yml
+    verify: verify.yml
+  # env:
+  #   # garante que o Ansible ache a role sob teste (o symlink automático do
+  #   # Molecule vai para o cache, fora do roles_path padrão)
+  #   ANSIBLE_ROLES_PATH: ../../../../roles/
+  # inventory:
+  #   links:
+  #     # reaproveita as variáveis do repo em vez de duplicá-las
+  #     # (de roles/haproxy/molecule/default/ até a raiz do repo)
+  #     group_vars: ../../../../group_vars/
+  #     # override local por host (interpreter do container)
+  #     host_vars: host_vars/
+
+verifier:
+  name: ansible

@@ -1,0 +1,12 @@
+---
+# Mesmo bootstrap do playbook.yml do repo: o Rocky 8 traz python3 = 3.6,
+# velho demais para o ansible-core 2.21 (módulos usam "from __future__
+# import annotations", Python >= 3.7). `raw` só precisa da conexão (docker exec).
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Instalar python39
+      ansible.builtin.raw: dnf install -y python39
+      register: result
+      changed_when: "'Nothing to do' not in result.stdout"

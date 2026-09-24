@@ -8,6 +8,7 @@ postgresql_users:
   - login_host: "{{ database_address }}"
     login_user: "{{ postgresql_user }}"
     login_password: ""
+    become: false
     name: "{{ database_user }}"
     password: "{{ db_pass }}"
 

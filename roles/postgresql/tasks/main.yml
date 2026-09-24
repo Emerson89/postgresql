@@ -3,10 +3,10 @@
   when: install_postgresql
 
 - include_tasks: RedHat.yml
-  when: ansible_distribution_file_variety == 'RedHat' and install_postgresql
+  when: ansible_facts['distribution_file_variety'] == 'RedHat' and install_postgresql
 
 - include_tasks: Debian.yml
-  when: ansible_distribution_file_variety == 'Debian' and install_postgresql
+  when: ansible_facts['distribution_file_variety'] == 'Debian' and install_postgresql
 
 - include_tasks: configure.yml 
   when: install_postgresql

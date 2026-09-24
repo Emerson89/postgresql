@@ -1,7 +1,15 @@
 ---
-- name: Disable SELinux
-  selinux:
-    state: disabled
+- name: Colocar SELinux em modo permissivo
+  ansible.builtin.lineinfile:
+    path: /etc/selinux/config
+    regexp: '^SELINUX='
+    line: SELINUX=permissive
+    create: true 
+
+- name: Aplicar setenforce 0 quando o SELinux estiver ativo
+  ansible.builtin.command: setenforce 0
+  when: ansible_selinux is defined and ansible_selinux.status == "enabled"
+  changed_when: false
   ignore_errors: true
 
 - name: Install packages
@@ -11,19 +19,21 @@
         - openssl
         - python3
         - python3-pip
+        - python3-psycopg2
     state: present
 
-- name: Update pip packages
-  pip:
-    name:
-        - setuptools
-        - pip
-    state: latest
+# - name: Update pip packages
+#   pip:
+#     name:
+#         - setuptools
+#         - pip
+#     state: latest
 
 - name: Install pip packages
   pip:
     name:
         - psycopg2
+    executable: pip3    
 
 - name: Install Key-repo
   rpm_key:

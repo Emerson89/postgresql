@@ -1,6 +1,6 @@
 ---
 - name: Create PostgreSQL users
-  postgresql_user:
+  community.postgresql.postgresql_user:
     name: "{{ item.name }}"
     password: "{{ item.password | default(omit) }}"
     login_host: "{{ item.login_host | default('localhost') }}"
