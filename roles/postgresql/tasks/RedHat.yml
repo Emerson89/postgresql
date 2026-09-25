@@ -29,11 +29,14 @@
 #         - pip
 #     state: latest
 
+# Sem `executable`, o módulo pip usa `<ansible_python_interpreter> -m pip`,
+# instalando o psycopg2 no mesmo Python que o Ansible usa (ex.: 3.9 no Rocky 8,
+# enquanto python3-psycopg2/pip3 atendem só o python3 do sistema, 3.6).
+# psycopg2-binary evita compilar (não exige gcc/pg_config/python-devel).
 - name: Install pip packages
   pip:
     name:
-        - psycopg2
-    executable: pip3    
+        - psycopg2-binary
 
 - name: Install Key-repo
   rpm_key:

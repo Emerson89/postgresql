@@ -7,6 +7,14 @@
   gather_facts: false
   tasks:
     - name: Instalar python39
-      ansible.builtin.raw: dnf install -y python39
+      ansible.builtin.raw: dnf install -y python39 python39-pip
       register: result
       changed_when: "'Nothing to do' not in result.stdout"
+
+    # Host Ubuntu 24.04+: o perfil AppArmor "unix-chkpwd" do host também se aplica
+    # ao /usr/sbin/unix_chkpwd de containers privilegiados e nega dac_override.
+    # Como o /etc/shadow do Rocky é 0000, o `sudo -u postgres` (become_user)
+    # falha com "PAM account management error". Com 0400 o root lê sem dac_override.
+    - name: Permitir leitura do /etc/shadow pelo root sem dac_override
+      ansible.builtin.raw: chmod 0400 /etc/shadow
+      changed_when: false
