@@ -1,9 +1,9 @@
 ---
 __postgresql_version: 14
 __postgresql_daemon: postgresql-{{ __postgresql_version }}
-__postgresql_bin_path: /usr/bin/postgresql-{{ __postgresql_version }}-setup
-__postgresql_config_path: /var/lib/pgsql/{{ __postgresql_version }}/data/
-__postgresql_data_dir: /var/lib/pgsql/{{ __postgresql_version }}/data/
+__postgresql_bin_path: /usr/pgsql-{{ __postgresql_version }}/bin/postgresql-{{ __postgresql_version }}-setup
+__postgresql_config_path: /var/lib/pgsql/{{ __postgresql_version }}/data
+__postgresql_data_dir: /var/lib/pgsql/{{ __postgresql_version }}/data
 __postgresql_packages:
     - postgresql{{ postgresql_version }}-server
     - postgresql{{ postgresql_version }}

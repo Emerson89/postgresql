@@ -27,11 +27,11 @@ provisioner:
   #   # garante que o Ansible ache a role sob teste (o symlink automático do
   #   # Molecule vai para o cache, fora do roles_path padrão)
   #   ANSIBLE_ROLES_PATH: ../../../../roles/
-  # inventory:
-  #   links:
-  #     # reaproveita as variáveis do repo em vez de duplicá-las
-  #     # (de roles/haproxy/molecule/default/ até a raiz do repo)
-  #     group_vars: ../../../../group_vars/
+  inventory:
+    links:
+      # reaproveita as variáveis do repo em vez de duplicá-las
+      # (de roles/haproxy/molecule/default/ até a raiz do repo)
+      group_vars: ../../group_vars/
   #     # override local por host (interpreter do container)
   #     host_vars: host_vars/
 

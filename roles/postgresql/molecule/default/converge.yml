@@ -4,8 +4,6 @@
 - name: Converge
   hosts: all
   #gather_facts: true # Disable if your role does not rely on facts
-  vars:
-    install_postgresql: true
   tasks:
     - name: Apply role under test
       ansible.builtin.include_role:

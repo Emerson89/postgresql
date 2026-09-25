@@ -1,0 +1,9 @@
+install_postgresql: true
+create_users_postgresql: true
+
+postgresql_version: 14
+postgresql_databases:
+  - name: "db"
+postgresql_users:
+  - name: "dbuser"
+    password: "yQE9ob2yqR4=xxtttrr5"
