@@ -54,6 +54,12 @@
     name: "{{ __postgresql_packages }}"
     state: present
 
+- name: timescaledb packages are installed.
+  apt:
+    name: "{{ __postgresql_packages_timescale }}"
+    state: present
+  when: timescaledb_install
+
 - name: Executando timescaledb-tune
   shell: |
    timescaledb-tune --quiet --yes
