@@ -32,7 +32,7 @@
     url: "{{ __postgresql_key_time }}"
     state: present
   when: 
-   - ansible_distribution == 'Debian'
+   - ansible_distribution == 'Debian' and timescaledb_install
 
 - name: Install repo postgresql
   apt_repository:
@@ -47,6 +47,7 @@
     repo: "{{ __timescaledb_repo }}"
     state: present
     update_cache: true
+  when: timescaledb_install
 
 - name: PostgreSQL packages are installed.
   apt:
@@ -57,4 +58,5 @@
   shell: |
    timescaledb-tune --quiet --yes
   notify: restart postgresql
+  when: timescaledb_install
  

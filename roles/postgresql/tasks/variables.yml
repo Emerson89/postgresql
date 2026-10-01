@@ -15,7 +15,7 @@
 - name: Define timescaledb_repo
   set_fact:
     timescaledb_repo: "{{ __timescaledb_repo }}"
-  when: timescaledb_repo is not defined and ansible_distribution == 'Debian' and ansible_distribution == 'Ubuntu'
+  when: timescaledb_repo is not defined and ansible_distribution == 'Debian' and ansible_distribution == 'Ubuntu' and timescaledb_install
 
 - name: Define postgresql_repo
   set_fact:
