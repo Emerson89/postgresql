@@ -1,8 +1,12 @@
 - name: Alter user postgres
   postgresql_query:
     login_db: postgres
-    query: ALTER USER postgres WITH PASSWORD '{{ lookup('ansible.builtin.password', 'passwordfile', length=21, chars=['ascii_lowercase', 'ascii_uppercase', 'digits']) }}'
+    query: ALTER USER postgres WITH PASSWORD '{{ superuser_secret }}'
   become: true
   become_user: "{{ postgresql_user }}"
   vars:
-    ansible_ssh_pipelining: true  
+    ansible_ssh_pipelining: true
+  changed_when: false
+  no_log: "{{ postgres_users_no_log }}"
+
+    

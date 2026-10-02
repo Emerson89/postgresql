@@ -1,0 +1,5 @@
+---
+# o prepare.yml instala o python39 (default do Rocky 8 é 3.6, velho demais
+# para o ansible-core 2.21); aqui fixamos o mesmo interpreter das VMs
+ansible_python_interpreter: /usr/bin/python3.9
+

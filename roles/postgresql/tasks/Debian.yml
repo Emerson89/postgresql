@@ -53,6 +53,7 @@
   apt:
     name: "{{ __postgresql_packages }}"
     state: present
+  register: package_installed
 
 - name: timescaledb packages are installed.
   apt:
